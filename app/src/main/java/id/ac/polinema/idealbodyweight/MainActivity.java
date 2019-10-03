@@ -11,17 +11,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import fragments.AboutFragment;
 import fragments.BrocaIndexFragment;
 import fragments.MenuFragment;
+import fragments.ResultFragment;
 
 public  class MainActivity extends AppCompatActivity implements
 		MenuFragment.OnFragmentInteractionListener,
-		BrocaIndexFragment.OnFragmentInteractionListener{
+		BrocaIndexFragment.OnFragmentInteractionListener,
+        ResultFragment.OnFragmentInteractionListener {
 
 	// Deklarasikan atribut Fragment di sini
 
 	private AboutFragment aboutFragment;
 	private MenuFragment menuFragment;
 	private BrocaIndexFragment brocaIndexFragment;
-
+    private ResultFragment resultFragment;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,6 +36,7 @@ public  class MainActivity extends AppCompatActivity implements
 
         setContentView(R.layout.activity_main);
 		brocaIndexFragment = new BrocaIndexFragment();
+		resultFragment = new ResultFragment();
 	}
 
 	@Override
@@ -56,12 +59,22 @@ public  class MainActivity extends AppCompatActivity implements
 	}
 
 	public void onCalculateBrocaIndexClicked(float index) {
-
+        resultFragment.setInformation(String.format("Your ideal weight is %.2f kg", index));
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, resultFragment)
+                .commit();
 	}
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onTryAgainButtonClicked(String brocaIndex) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, brocaIndexFragment)
+                .commit();
     }
 
     public void onBrocaIndexButtonClicked() {
